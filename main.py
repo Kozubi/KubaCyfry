@@ -63,7 +63,7 @@ class MyApp(GridLayout):
         :return:
         """
         if str(self.NUMBER) == btn.text:
-            Clock.schedule_once(partial(self.soundPlayer, "1.3gp"))
+            self.soundPlayer("1.3gp")
         else:
             Clock.schedule_once(partial(self.soundPlayer, "to_nie.mp3"))
         self.startGame()
@@ -72,7 +72,8 @@ class MyApp(GridLayout):
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
-        player = SoundLoader.load(sound)
+        print('sounds/{}'.format(sound), sound)
+        player = SoundLoader.load("sounds/{}".format(sound))
         player.play()
         Clock.unschedule(self.soundPlayer)
 
