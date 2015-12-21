@@ -50,7 +50,6 @@ class MyApp(GridLayout):
 
     def startGame(self, *args):
         "will tale random numbet and plays correct audio"
-
         print("wybierz cyfre")
         self.NUMBER = random.choice(range(1, 10))
         # TODO dodac odtwarzanie dzwieku
