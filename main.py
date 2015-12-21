@@ -15,14 +15,13 @@ class MyApp(GridLayout):
         self.rows, self.cols = [3, 3]
         self.padding = 5
         self.spacing = 5
-
         self.sounds = {1: "1.mp3", 2: "2.mp3", 3: "3.mp3", 4: "4.mp3", 5: "5.mp3",
                        6: "6.mp3", 7: "7.mp3", 8: "8.mp3", 9: "9.mp3"}
-
         self.widgetList = []  # will store all buttons to easy remove
 
         self.startGame()
         self.insertWidgets()
+
 
     def insertWidgets(self):
         if len(self.widgetList) > 0:
@@ -48,6 +47,7 @@ class MyApp(GridLayout):
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
+
     def startGame(self, *args):
         "will tale random numbet and plays correct audio"
 
@@ -56,6 +56,7 @@ class MyApp(GridLayout):
         # TODO dodac odtwarzanie dzwieku
         print(self.NUMBER, self.sounds[self.NUMBER])
 
+
     def callback(self, btn):
         """
         :param btn: here btn number will be taken to use it for sound
@@ -63,11 +64,11 @@ class MyApp(GridLayout):
         """
         if str(self.NUMBER) == btn.text:
             Clock.schedule_once(partial(self.soundPlayer, "hurra.mp3"))
-
         else:
             Clock.schedule_once(partial(self.soundPlayer, "to_nie.mp3"))
         self.startGame()
         self.insertWidgets()
+
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
