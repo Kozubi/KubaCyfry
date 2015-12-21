@@ -19,7 +19,7 @@ class MyApp(GridLayout):
         self.sounds = {1: "1.mp3", 2: "2.mp3", 3: "3.mp3", 4: "4.mp3", 5: "5.mp3",
                        6: "6.mp3", 7: "7.mp3", 8: "8.mp3", 9: "9.mp3"}
 
-        self.widgetList = []  # will store all buttons tp easy remove
+        self.widgetList = []  # will store all buttons to easy remove
 
         self.startGame()
         self.insertWidgets()
