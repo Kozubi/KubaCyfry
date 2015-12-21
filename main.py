@@ -6,10 +6,9 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
-from threading import Thread
+from kivy.graphics import Canvas, Rectangle, Color
 import random
 from functools import partial
-from time import sleep
 
 class MyApp(GridLayout):
     def __init__(self, *args):
@@ -53,9 +52,10 @@ class MyApp(GridLayout):
         self.block = False
 
 
-    def clocker(self, sound, *args):
-
-        Clock.schedule_once(partial(self.soundPlayer, sound), -1)
+    def clocker(self, sound, time, *args):
+        for item in self.widgetList:
+            item.disable = True
+        Clock.schedule_once(partial(self.soundPlayer, sound), time)
 
 
     def startGame(self, *args):
@@ -64,8 +64,8 @@ class MyApp(GridLayout):
         print("wybierz cyfre")
         self.NUMBER = random.choice(range(1, 10))
         # TODO dodac odtwarzanie dzwieku
-        self.clocker("pokaz_cyfre.wav")
-        self.clocker(self.sounds[self.NUMBER])
+        self.clocker("pokaz_cyfre.wav", 2)
+        self.clocker(self.sounds[self.NUMBER], 6)
 
 
     def callback(self, btn):
@@ -76,25 +76,20 @@ class MyApp(GridLayout):
         if self.block == False:
             self.block = True
             if str(self.NUMBER) == btn.text:
-                self.clocker("hurra.wav")
+                self.clocker("hurra.wav", -1)
             else:
-               self.clocker("nie.wav")
+               self.clocker("nie.wav", -1)
 
             self.startGame()
             self.insertWidgets()
-
-
-
 
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
 
         print('sounds/{}'.format(sound), sound)
-
         self.player = SoundLoader.load("sounds/{}".format(sound))
         self.player.play()
-        sleep(2)
 
 
 if __name__ == "__main__":
