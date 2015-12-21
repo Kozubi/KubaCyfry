@@ -30,7 +30,7 @@ class MyApp(GridLayout):
             for item in self.widgetList:
                 self.remove_widget(item)
         # TODO button colors - they are too dark
-        self.btnColors = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1), (.6, 0, .4, 1),
+        self.btnColors = [(1, .2, .2, 1), (0, 1, 0, 1), (0, 0, 1, 1), (.6, 0, .4, 1),
                           (1, 0, 1, 1), (0, 1, 1, 1), (1, 1, 0, 1), (1, 1, .5, 1), (1, .5, 1, 1)]
 
         self.btnNUMBERS = [num for num in range(1,10)] # buttons numbers
@@ -65,7 +65,7 @@ class MyApp(GridLayout):
         self.NUMBER = random.choice(range(1, 10))
         # TODO dodac odtwarzanie dzwieku
         self.clocker("pokaz_cyfre.wav", 2)
-        self.clocker(self.sounds[self.NUMBER], 6)
+        self.clocker(self.sounds[self.NUMBER], 4)
 
 
     def callback(self, btn):
