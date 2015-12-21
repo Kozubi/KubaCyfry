@@ -75,12 +75,9 @@ class MyApp(GridLayout):
         player.play()
         Clock.unschedule(self.soundPlayer)
 
-class Main(App):
-    def btnCallback(self, *args):
-        print(args)
 
-    def build(self):
-        return MyApp()
-
-
-Main().run()
+if __name__ == "__main__":
+    class Main(App):
+        def build(self):
+            return MyApp()
+    Main().run()
