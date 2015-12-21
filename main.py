@@ -63,7 +63,7 @@ class MyApp(GridLayout):
         :return:
         """
         if str(self.NUMBER) == btn.text:
-            Clock.schedule_once(partial(self.soundPlayer, "hurra.mp3"))
+            Clock.schedule_once(partial(self.soundPlayer, "1.3gp"))
         else:
             Clock.schedule_once(partial(self.soundPlayer, "to_nie.mp3"))
         self.startGame()
