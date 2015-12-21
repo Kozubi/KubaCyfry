@@ -4,8 +4,10 @@ from kivy.app import App
 #from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
+from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
 import random
-
+from functools import partial
 
 class MyApp(GridLayout):
     def __init__(self, *args):
@@ -56,13 +58,18 @@ class MyApp(GridLayout):
         :return:
         """
         if str(self.NUMBER) == btn.text:
-            print("HURRA")
+            Clock.schedule_once(partial(self.soundPlayer, "hurra.mp3"))
 
         else:
             print("TO NIE TO")
         self.startGame()
         self.insertWidgets()
 
+    def soundPlayer(self, sound, *args):
+        # function for playing sounds
+        player = SoundLoader.load(sound)
+        player.play()
+        Clock.unschedule(self.soundPlayer)
 
 class Main(App):
     def btnCallback(self, *args):
