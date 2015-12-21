@@ -8,6 +8,7 @@ from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 import random
 from functools import partial
+from time import sleep
 
 class MyApp(GridLayout):
     def __init__(self, *args):
@@ -15,12 +16,13 @@ class MyApp(GridLayout):
         self.rows, self.cols = [3, 3]
         self.padding = 5
         self.spacing = 5
-        self.sounds = {1: "1.mp3", 2: "2.mp3", 3: "3.mp3", 4: "4.mp3", 5: "5.mp3",
-                       6: "6.mp3", 7: "7.mp3", 8: "8.mp3", 9: "9.mp3"}
+        self.sounds = {1: "1.wav", 2: "2.wav", 3: "3.wav", 4: "4.wav", 5: "5.wav",
+                       6: "6.wav", 7: "7.wav", 8: "8.wav", 9: "9.wav"}
         self.widgetList = []  # will store all buttons to easy remove
+        self.block = False # for blocking overlaping sounds
 
-        self.startGame()
         self.insertWidgets()
+        self.startGame()
 
 
     def insertWidgets(self):
@@ -42,10 +44,15 @@ class MyApp(GridLayout):
             btn = Button(text=str(currentNumber), font_size="75sp", background_color=color,
                          on_press=self.callback)
             btn.background_normal= "buttons/images.jpg"
+
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
+
+
+    def clocker(self, sound, *args):
+        Clock.schedule_once(partial(self.soundPlayer, sound), .00001)
 
 
     def startGame(self, *args):
@@ -54,7 +61,8 @@ class MyApp(GridLayout):
         print("wybierz cyfre")
         self.NUMBER = random.choice(range(1, 10))
         # TODO dodac odtwarzanie dzwieku
-        print(self.NUMBER, self.sounds[self.NUMBER])
+        self.clocker("pokaz_cyfre.wav")
+        self.clocker(self.sounds[self.NUMBER])
 
 
     def callback(self, btn):
@@ -62,10 +70,15 @@ class MyApp(GridLayout):
         :param btn: here btn number will be taken to use it for sound
         :return:
         """
+        for item in self.children:
+            print(item)
+            item.disabled = True
+
         if str(self.NUMBER) == btn.text:
-            self.soundPlayer("1.3gp")
+            self.clocker("hurra.wav")
         else:
-            Clock.schedule_once(partial(self.soundPlayer, "to_nie.mp3"))
+           self.clocker("nie.wav")
+
         self.startGame()
         self.insertWidgets()
 
@@ -73,10 +86,14 @@ class MyApp(GridLayout):
     def soundPlayer(self, sound, *args):
         # function for playing sounds
         print('sounds/{}'.format(sound), sound)
-        player = SoundLoader.load("sounds/{}".format(sound))
-        player.play()
-        Clock.unschedule(self.soundPlayer)
 
+        def inner(*args):
+            player = SoundLoader.load("sounds/{}".format(sound))
+            player.play()
+            sleep(2)
+            for item in self.widgetList:
+                item.disabled = False
+        Clock.schedule_once(inner)
 
 if __name__ == "__main__":
     class Main(App):
