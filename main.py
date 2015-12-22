@@ -10,7 +10,6 @@ import random
 from functools import partial
 
 
-
 class MyApp(GridLayout):
     def __init__(self, *args):
         super(MyApp, self).__init__()
@@ -53,7 +52,6 @@ class MyApp(GridLayout):
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
 
-
     def clocker(self, sound, time, *args):
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
 
@@ -64,7 +62,6 @@ class MyApp(GridLayout):
         # TODO dodac odtwarzanie dzwieku
         self.clocker("pokaz_cyfre.wav", 2)
         self.clocker(self.sounds[self.NUMBER], 4)
-
 
 
     def callback(self, btn):
@@ -94,15 +91,6 @@ class MyApp(GridLayout):
         print('sounds/{}'.format(sound), sound)
         self.player = SoundLoader().load("sounds/{}".format(sound))
         self.player.play()
-
-
-
-
-
-class MyPlayer(SoundLoader, Sound):
-    pass
-
-
 
 
 if __name__ == "__main__":
