@@ -42,9 +42,11 @@ class MyApp(GridLayout):
             color = random.choice(self.btnColors) # select random color for new button
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="100sp", background_color=color,
-                         on_press=self.callback)
+                         on_release=self.callback)
             btn.background_normal= "buttons/purple-button-hi.png"
             btn.background_disabled_normal = "buttons/purple-button-hi.png"
+            # TODO add down background color
+            btn.background_down = "buttons/purple-button-hi.png"
 
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
