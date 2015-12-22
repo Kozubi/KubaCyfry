@@ -85,9 +85,11 @@ class MyApp(GridLayout):
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
+        # will block main window where sound is played!
         if sound in ["hurra.wav", "nie.wav", "pokaz_cyfre.wav"]:
             self.disabled = True
         elif sound in self.sounds.values():
+            # will unlock main window when number is played
             self.disabled = False
 
         print('sounds/{}'.format(sound), sound)
