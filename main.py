@@ -4,11 +4,12 @@ from kivy.app import App
 #from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
-from kivy.core.audio import SoundLoader
+from kivy.core.audio import SoundLoader, Sound
 from kivy.clock import Clock
-from kivy.graphics import Canvas, Rectangle, Color
 import random
 from functools import partial
+
+
 
 class MyApp(GridLayout):
     def __init__(self, *args):
@@ -24,8 +25,8 @@ class MyApp(GridLayout):
         self.insertWidgets()
         self.startGame()
 
-
     def insertWidgets(self):
+        self.disabled = True # for initial run!
         if len(self.widgetList) > 0:
             for item in self.widgetList:
                 self.remove_widget(item)
@@ -49,13 +50,12 @@ class MyApp(GridLayout):
                                         #  from childrens
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
-        self.block = False
+
 
 
     def clocker(self, sound, time, *args):
-        for item in self.widgetList:
-            item.disable = True
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
+
 
 
     def startGame(self, *args):
@@ -67,35 +67,42 @@ class MyApp(GridLayout):
         self.clocker(self.sounds[self.NUMBER], 4)
 
 
+
     def callback(self, btn):
         """
         :param btn: here btn number will be taken to use it for sound
         :return:
         """
-        if self.block == False:
-            self.block = True
-            if str(self.NUMBER) == btn.text:
-                self.clocker("hurra.wav", -1)
-            else:
-               self.clocker("nie.wav", -1)
+        self.disabled = True
+        if str(self.NUMBER) == btn.text:
+            self.clocker("hurra.wav", -1)
+        else:
+           self.clocker("nie.wav", -1)
 
-            self.startGame()
-            self.insertWidgets()
+        self.startGame()
+        self.insertWidgets()
 
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
+        if sound in ["hurra.wav", "nie.wav", "pokaz_cyfre.wav"]:
+            self.disabled = True
+        elif sound in self.sounds.values():
+            self.disabled = False
 
         print('sounds/{}'.format(sound), sound)
-        self.player = SoundLoader.load("sounds/{}".format(sound))
-        if self.player:
-            #TODO add disable widget method!!
-
+        self.player = SoundLoader().load("sounds/{}".format(sound))
         self.player.play()
 
-    def disbWidgets(self, *args):
-        for item in self.widgetList:
-            item.disable = True
+
+
+
+
+class MyPlayer(SoundLoader, Sound):
+    pass
+
+
+
 
 if __name__ == "__main__":
     class Main(App):
