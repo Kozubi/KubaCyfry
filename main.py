@@ -2,7 +2,9 @@ __author__ = 'Marcin'
 
 from kivy.app import App
 #from kivy.lang import Builder
+from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.audio import SoundLoader, Sound
 from kivy.clock import Clock
@@ -20,13 +22,16 @@ class MyApp(GridLayout):
                        6: "6.wav", 7: "7.wav", 8: "8.wav", 9: "9.wav"}
         self.widgetList = []  # will store all buttons to easy remove
         self.block = False # for blocking overlaping sounds
+        self.NUMBER = random.choice(range(1, 10))
 
-        self.insertWidgets()
+        self.popuper().open()
         self.startGame()
+        self.insertWidgets()
 
     def insertWidgets(self):
         self.disabled = True # for initial run!
-        if len(self.widgetList) > 0:
+        self.popuper().open()
+        if len(self.widgetList) > 1:
             for item in self.widgetList:
                 self.remove_widget(item)
         # TODO button colors - they are too dark
@@ -43,6 +48,8 @@ class MyApp(GridLayout):
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="100sp", background_color=color,
                          on_release=self.callback)
+
+
             btn.background_normal= "buttons/purple-button-hi.png"
             btn.background_disabled_normal = "buttons/purple-button-hi.png"
             # TODO add down background color
@@ -53,17 +60,24 @@ class MyApp(GridLayout):
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
-
     def clocker(self, sound, time, *args):
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
 
     def startGame(self, *args):
-        "will tale random numbet and plays correct audio"
+        "will tale random number and plays correct audio"
         print("wybierz cyfre")
         self.NUMBER = random.choice(range(1, 10))
-        # TODO dodac odtwarzanie dzwieku
         self.clocker("pokaz_cyfre.wav", 2)
         self.clocker(self.sounds[self.NUMBER], 4)
+
+    def popuper(self, *args):
+        self.pop = ModalView()
+        self.pop.background = "buttons/purple-button-hi.png"
+        self.pop.add_widget(Label(text=str(self.NUMBER),
+                                  font_size="100sp",))
+        self.pop.size_hint = (.8,.8)
+        return self.pop
+
 
 
     def callback(self, btn):
@@ -71,7 +85,7 @@ class MyApp(GridLayout):
         :param btn: here btn number will be taken to use it for sound
         :return:
         """
-        self.disabled = True
+        #self.disabled = True
         if str(self.NUMBER) == btn.text:
             self.clocker("hurra.wav", -1)
         else:
@@ -85,13 +99,19 @@ class MyApp(GridLayout):
         # function for playing sounds
         # will block main window where sound is played!
         if sound in ["hurra.wav", "nie.wav", "pokaz_cyfre.wav"]:
-            self.disabled = True
+            #self.disabled = True
+            for i in self.children:
+                i.disabled = True
         elif sound in self.sounds.values():
             # will unlock main window when number is played
+
             self.disabled = False
+            self.pop.dismiss()
+
 
         print('sounds/{}'.format(sound), sound)
         self.player = SoundLoader().load("sounds/{}".format(sound))
+    #TODO  self.player.on_play = self.disabled
         self.player.play()
 
 
