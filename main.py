@@ -89,8 +89,14 @@ class MyApp(GridLayout):
 
         print('sounds/{}'.format(sound), sound)
         self.player = SoundLoader.load("sounds/{}".format(sound))
+        if self.player:
+            #TODO add disable widget method!!
+
         self.player.play()
 
+    def disbWidgets(self, *args):
+        for item in self.widgetList:
+            item.disable = True
 
 if __name__ == "__main__":
     class Main(App):
