@@ -6,6 +6,7 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
+from kivy.graphics import Canvas, Rectangle, Color
 import random
 from functools import partial
 
@@ -15,12 +16,13 @@ class MyApp(GridLayout):
         self.rows, self.cols = [3, 3]
         self.padding = 5
         self.spacing = 5
-        self.sounds = {1: "1.mp3", 2: "2.mp3", 3: "3.mp3", 4: "4.mp3", 5: "5.mp3",
-                       6: "6.mp3", 7: "7.mp3", 8: "8.mp3", 9: "9.mp3"}
+        self.sounds = {1: "1.wav", 2: "2.wav", 3: "3.wav", 4: "4.wav", 5: "5.wav",
+                       6: "6.wav", 7: "7.wav", 8: "8.wav", 9: "9.wav"}
         self.widgetList = []  # will store all buttons to easy remove
+        self.block = False # for blocking overlaping sounds
 
-        self.startGame()
         self.insertWidgets()
+        self.startGame()
 
 
     def insertWidgets(self):
@@ -28,7 +30,7 @@ class MyApp(GridLayout):
             for item in self.widgetList:
                 self.remove_widget(item)
         # TODO button colors - they are too dark
-        self.btnColors = [(1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1), (.6, 0, .4, 1),
+        self.btnColors = [(1, .2, .2, 1), (0, 1, 0, 1), (0, 0, 1, 1), (.6, 0, .4, 1),
                           (1, 0, 1, 1), (0, 1, 1, 1), (1, 1, 0, 1), (1, 1, .5, 1), (1, .5, 1, 1)]
 
         self.btnNUMBERS = [num for num in range(1,10)] # buttons numbers
@@ -41,11 +43,19 @@ class MyApp(GridLayout):
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="75sp", background_color=color,
                          on_press=self.callback)
-            btn.background_normal= "buttons/images.jpg"
+            btn.background_normal= "buttons/purple-button-hi.png"
+
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
+        self.block = False
+
+
+    def clocker(self, sound, time, *args):
+        for item in self.widgetList:
+            item.disable = True
+        Clock.schedule_once(partial(self.soundPlayer, sound), time)
 
 
     def startGame(self, *args):
@@ -53,7 +63,8 @@ class MyApp(GridLayout):
         print("wybierz cyfre")
         self.NUMBER = random.choice(range(1, 10))
         # TODO dodac odtwarzanie dzwieku
-        print(self.NUMBER, self.sounds[self.NUMBER])
+        self.clocker("pokaz_cyfre.wav", 2)
+        self.clocker(self.sounds[self.NUMBER], 4)
 
 
     def callback(self, btn):
@@ -61,20 +72,30 @@ class MyApp(GridLayout):
         :param btn: here btn number will be taken to use it for sound
         :return:
         """
-        if str(self.NUMBER) == btn.text:
-            Clock.schedule_once(partial(self.soundPlayer, "hurra.mp3"))
-        else:
-            Clock.schedule_once(partial(self.soundPlayer, "to_nie.mp3"))
-        self.startGame()
-        self.insertWidgets()
+        if self.block == False:
+            self.block = True
+            if str(self.NUMBER) == btn.text:
+                self.clocker("hurra.wav", -1)
+            else:
+               self.clocker("nie.wav", -1)
+
+            self.startGame()
+            self.insertWidgets()
 
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
-        player = SoundLoader.load(sound)
-        player.play()
-        Clock.unschedule(self.soundPlayer)
 
+        print('sounds/{}'.format(sound), sound)
+        self.player = SoundLoader.load("sounds/{}".format(sound))
+        if self.player:
+            #TODO add disable widget method!!
+
+        self.player.play()
+
+    def disbWidgets(self, *args):
+        for item in self.widgetList:
+            item.disable = True
 
 if __name__ == "__main__":
     class Main(App):
