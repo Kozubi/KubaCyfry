@@ -6,10 +6,11 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
-from kivy.core.audio import SoundLoader, Sound
+from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 import random
 from functools import partial
+from time import sleep
 
 
 class MyApp(GridLayout):
@@ -30,8 +31,8 @@ class MyApp(GridLayout):
 
     def insertWidgets(self):
         self.disabled = True # for initial run!
-        self.popUp = self.popuper()
-        self.popUp.open()
+        self.numberPopUp = self.popuper()
+        self.numberPopUp.open()
         if len(self.widgetList) > 1:
             for item in self.widgetList:
                 self.remove_widget(item)
@@ -65,7 +66,7 @@ class MyApp(GridLayout):
     def startGame(self, *args):
         "will tale random number and plays correct audio"
         print("wybierz cyfre")
-        self.ppp = ModalView()
+        self.HurrayOhNoes = ModalView()
         self.NUMBER = random.choice(range(1, 10))
         # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
         self.clocker("pokaz_cyfre.wav", 2)
@@ -105,23 +106,30 @@ class MyApp(GridLayout):
     def PLAY(self, sound):
         # used to open and dismiss popups while specific sound is beign  played
         sound = sound.split("/")[-1]
-        self.popUp.dismiss()
+        #self.numberPopUp.dismiss()
         if sound == "hurra.wav":
-            self.ppp.add_widget(Label(text="HURRA"))
-            self.ppp.open()
+            self.HurrayOhNoes.add_widget(Label(text="HURRA"))
+            self.HurrayOhNoes.open()
         if sound == "nie.wav":
-            self.ppp.add_widget(Label(text="NIE"))
-            self.ppp.open()
+            self.HurrayOhNoes.add_widget(Label(text="NIE"))
+            self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
-            self.ppp.dismiss()
-            self.popUp.open()
+            self.HurrayOhNoes.dismiss()
+            self.temp_popup = ModalView()
+            self.temp_popup.add_widget(Label(text="WSKAZ CYFRE"))
+            self.temp_popup.open()
+            #self.numberPopUp.open()
+        if sound in self.sounds.values():
+            self.temp_popup.dismiss()
+            self.numberPopUp.open()
         print("PLAYYYY", sound)
 
     def STOP(self, sound):
         sound = sound.split("/")[-1]
         if sound in self.sounds.values():
             self.disabled = False
-            self.popUp.dismiss()
+            sleep(1)
+            self.numberPopUp.dismiss()
 
 if __name__ == "__main__":
     class Main(App):
