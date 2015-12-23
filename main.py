@@ -33,8 +33,6 @@ class MyApp(GridLayout):
         self.disabled = True # for initial run!
         self.NUMBER = random.choice(range(1,10))
         self.HurrayOhNoes = ModalView(auto_dismiss = False, size_hint=(.8,.8), background="")
-        # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
-
         self.clocker("pokaz_cyfre.wav", 1)
         self.clocker(self.sounds[self.NUMBER], 4)
 
@@ -136,6 +134,8 @@ class MyApp(GridLayout):
 
 if __name__ == "__main__":
     class Main(App):
+        def open_settings(self, *largs):
+            pass
         def build(self):
             return MyApp()
     Main().run()

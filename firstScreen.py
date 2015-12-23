@@ -28,7 +28,10 @@ class Splash(GridLayout):
 
 if __name__ == "__main__":
     class MyApp2(App):
+        def open_settings(self, *largs):
+            pass
         def build(self):
             return Splash()
 
-    MyApp2().run()
+    app = MyApp2()
+    app.run()
