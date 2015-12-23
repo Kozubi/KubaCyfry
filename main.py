@@ -32,7 +32,8 @@ class MyApp(GridLayout):
     def insertWidgets(self):
         self.disabled = True # for initial run!
         self.NUMBER = random.choice(range(1,10))
-        self.HurrayOhNoes = ModalView(auto_dismiss = False, size_hint=(.8,.8), background="")
+        self.HurrayOhNoes = ModalView(auto_dismiss = False, size_hint=(.8,.8),
+                                      background="")
         self.clocker("pokaz_cyfre.wav", 1)
         self.clocker(self.sounds[self.NUMBER], 4)
 
@@ -108,12 +109,13 @@ class MyApp(GridLayout):
         if sound == "nie.wav":
             self.numberPopUp.dismiss()
             self.HurrayOhNoes.background= "images/sad.jpg" #add_widget(Image(source="images/sad.jpg", keep_ration=False))
-            self.HurrayOhNoes.size_hint = (.4,.8)
+            #self.HurrayOhNoes.size_hint = (.5,.8)
             self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
             sleep(.4)
             self.HurrayOhNoes.dismiss()
-            self.temp_popup = ModalView(auto_dismiss = False, background="images/question.png", size_hint=(.5,.7))
+            self.temp_popup = ModalView(auto_dismiss = False, background="images/question.png",
+                                        size_hint=(.6,.5))
             #self.temp_popup.add_widget(Image(source="images/question.png", keep_ration=False))
             self.temp_popup.open()
             #self.numberPopUp.open()

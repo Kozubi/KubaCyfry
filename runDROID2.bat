@@ -1,0 +1,1 @@
+py -2 main.py -m screen:droid2,portrait
