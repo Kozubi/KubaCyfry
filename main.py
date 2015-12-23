@@ -49,17 +49,15 @@ class MyApp(GridLayout):
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="100sp", background_color=color,
                          on_release=self.callback)
-
-
             btn.background_normal= "buttons/purple-button-hi.png"
             btn.background_disabled_normal = "buttons/purple-button-hi.png"
             # TODO add down background color
             btn.background_down = "buttons/purple-button-hi.png"
-
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
+
 
     def clocker(self, sound, time, *args):
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
@@ -69,6 +67,7 @@ class MyApp(GridLayout):
         print("wybierz cyfre")
         self.ppp = ModalView()
         self.NUMBER = random.choice(range(1, 10))
+        # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
         self.clocker("pokaz_cyfre.wav", 2)
         self.clocker(self.sounds[self.NUMBER], 4)
 
