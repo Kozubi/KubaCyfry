@@ -70,7 +70,8 @@ class MyApp(GridLayout):
         self.HurrayOhNoes = ModalView()
         self.NUMBER = random.choice(range(1, 10))
         # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
-        self.clocker("pokaz_cyfre.wav", 2)
+
+        self.clocker("pokaz_cyfre.wav", 1)
         self.clocker(self.sounds[self.NUMBER], 4)
 
     def popuper(self, *args):
@@ -115,6 +116,7 @@ class MyApp(GridLayout):
             self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg", keep_ration=False))
             self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
+            sleep(.4)
             self.HurrayOhNoes.dismiss()
             self.temp_popup = ModalView()
             self.temp_popup.add_widget(Label(text="WSKAZ CYFRE"))
@@ -123,7 +125,6 @@ class MyApp(GridLayout):
         if sound in self.sounds.values():
             self.temp_popup.dismiss()
             self.numberPopUp.open()
-        print("PLAYYYY", sound)
 
     def STOP(self, sound):
         sound = sound.split("/")[-1]
