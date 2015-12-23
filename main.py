@@ -24,13 +24,14 @@ class MyApp(GridLayout):
         self.block = False # for blocking overlaping sounds
         self.NUMBER = random.choice(range(1, 10))
 
-        self.popuper().open()
         self.startGame()
         self.insertWidgets()
 
+
     def insertWidgets(self):
         self.disabled = True # for initial run!
-        self.popuper().open()
+        self.popUp = self.popuper()
+        self.popUp.open()
         if len(self.widgetList) > 1:
             for item in self.widgetList:
                 self.remove_widget(item)
@@ -66,6 +67,8 @@ class MyApp(GridLayout):
     def startGame(self, *args):
         "will tale random number and plays correct audio"
         print("wybierz cyfre")
+        self.ppp = ModalView()
+
         self.NUMBER = random.choice(range(1, 10))
         self.clocker("pokaz_cyfre.wav", 2)
         self.clocker(self.sounds[self.NUMBER], 4)
@@ -75,9 +78,8 @@ class MyApp(GridLayout):
         self.pop.background = "buttons/purple-button-hi.png"
         self.pop.add_widget(Label(text=str(self.NUMBER),
                                   font_size="100sp",))
-        self.pop.size_hint = (.8,.8)
+        self.pop.size_hint = (.95,.95)
         return self.pop
-
 
 
     def callback(self, btn):
@@ -98,19 +100,29 @@ class MyApp(GridLayout):
     def soundPlayer(self, sound, *args):
         # function for playing sounds
         # will block main window where sound is played!
+        self.player = SoundLoader().load("sounds/{}".format(sound))
         if sound in ["hurra.wav", "nie.wav", "pokaz_cyfre.wav"]:
             #self.disabled = True
             for i in self.children:
                 i.disabled = True
+            if sound == "hurra.wav":
+                print("HURRA")
+                self.ppp.add_widget(Label(text="HURRA"))
+                self.ppp.open()
+            elif sound == 'nie.wav':
+                self.ppp.dismiss()
+            elif sound == 'pokaz_cyfre.wav':
+                self.ppp.dismiss()
+            #TODO ADD GREETING POPUP!
         elif sound in self.sounds.values():
             # will unlock main window when number is played
-
+            print("IN SOUND")
             self.disabled = False
-            self.pop.dismiss()
-
+            self.popUp.dismiss()
+            self.ppp.dismiss()
+            del self.ppp
 
         print('sounds/{}'.format(sound), sound)
-        self.player = SoundLoader().load("sounds/{}".format(sound))
     #TODO  self.player.on_play = self.disabled
         self.player.play()
 
