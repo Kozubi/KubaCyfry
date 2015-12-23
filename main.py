@@ -94,7 +94,6 @@ class MyApp(GridLayout):
         self.startGame()
         self.insertWidgets()
 
-
     def soundPlayer(self, sound, *args):
         # function for playing sounds
         # will block main window where sound is played!
