@@ -26,14 +26,14 @@ class MyApp(GridLayout):
         self.block = False # for blocking overlaping sounds
         self.NUMBER = random.choice(range(1, 10))
         self.sound = SoundLoader()
-        self.startGame()
+
         self.insertWidgets()
+        self.startGame()
 
 
     def insertWidgets(self):
         self.disabled = True # for initial run!
-        self.numberPopUp = self.popuper()
-        self.numberPopUp.open()
+
         if len(self.widgetList) > 1:
             for item in self.widgetList:
                 self.remove_widget(item)
@@ -60,6 +60,11 @@ class MyApp(GridLayout):
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
+        # popup with number for presentation
+        self.numberPopUp = ModalView(background = "buttons/purple-button-hi.png", size_hint = (.95,.95))
+        self.numberPopUp.add_widget(Label(text=str(self.NUMBER),
+                                  font_size="100sp",))
+
 
     def clocker(self, sound, time, *args):
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
@@ -67,20 +72,20 @@ class MyApp(GridLayout):
     def startGame(self, *args):
         "will tale random number and plays correct audio"
         print("wybierz cyfre")
-        self.HurrayOhNoes = ModalView()
+        self.HurrayOhNoes = ModalView(size_hint=(.8,.8), background="")
         self.NUMBER = random.choice(range(1, 10))
         # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
 
         self.clocker("pokaz_cyfre.wav", 1)
         self.clocker(self.sounds[self.NUMBER], 4)
 
-    def popuper(self, *args):
-        self.pop = ModalView()
-        self.pop.background = "buttons/purple-button-hi.png"
-        self.pop.add_widget(Label(text=str(self.NUMBER),
-                                  font_size="100sp",))
-        self.pop.size_hint = (.95,.95)
-        return self.pop
+    # def popuper(self, *args):
+    #     self.pop = ModalView()
+    #     self.pop.background = "buttons/purple-button-hi.png"
+    #     self.pop.add_widget(Label(text=str(self.NUMBER),
+    #                               font_size="100sp",))
+    #     self.pop.size_hint = (.95,.95)
+    #     return self.pop
 
 
     def callback(self, btn):
@@ -110,9 +115,11 @@ class MyApp(GridLayout):
         sound = sound.split("/")[-1]
         #self.numberPopUp.dismiss()
         if sound == "hurra.wav":
+            self.numberPopUp.dismiss()
             self.HurrayOhNoes.add_widget(Image(source="images/happy.jpg"))
             self.HurrayOhNoes.open()
         if sound == "nie.wav":
+            self.numberPopUp.dismiss()
             self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg", keep_ration=False))
             self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
@@ -125,6 +132,7 @@ class MyApp(GridLayout):
         if sound in self.sounds.values():
             self.temp_popup.dismiss()
             self.numberPopUp.open()
+
 
     def STOP(self, sound):
         sound = sound.split("/")[-1]
