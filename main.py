@@ -24,15 +24,19 @@ class MyApp(GridLayout):
                        6: "6.wav", 7: "7.wav", 8: "8.wav", 9: "9.wav"}
         self.widgetList = []  # will store all buttons to easy remove
         self.block = False # for blocking overlaping sounds
-        self.NUMBER = random.choice(range(1, 10))
-        self.sound = SoundLoader()
 
+        self.sound = SoundLoader()
         self.insertWidgets()
-        self.startGame()
 
 
     def insertWidgets(self):
         self.disabled = True # for initial run!
+        self.NUMBER = random.choice(range(1,10))
+        self.HurrayOhNoes = ModalView(auto_dismiss = False, size_hint=(.8,.8), background="")
+        # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
+
+        self.clocker("pokaz_cyfre.wav", 1)
+        self.clocker(self.sounds[self.NUMBER], 4)
 
         if len(self.widgetList) > 1:
             for item in self.widgetList:
@@ -44,6 +48,7 @@ class MyApp(GridLayout):
         self.btnNUMBERS = [num for num in range(1,10)] # buttons numbers
         self.btnNUMBERScopy = [num for num in range(1,10)] # copy of list for random generating new number\
                                                             #  for each button
+
 
         for i in self.btnNUMBERS:
             currentNumber = random.choice(self.btnNUMBERScopy) # selects number for button text
@@ -61,31 +66,13 @@ class MyApp(GridLayout):
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
         # popup with number for presentation
-        self.numberPopUp = ModalView(background = "buttons/purple-button-hi.png", size_hint = (.95,.95))
+        self.numberPopUp = ModalView(auto_dismiss = False, background = "buttons/purple-button-hi.png", size_hint = (.7,.7))
         self.numberPopUp.add_widget(Label(text=str(self.NUMBER),
                                   font_size="100sp",))
 
 
     def clocker(self, sound, time, *args):
         Clock.schedule_once(partial(self.soundPlayer, sound), time)
-
-    def startGame(self, *args):
-        "will tale random number and plays correct audio"
-        print("wybierz cyfre")
-        self.HurrayOhNoes = ModalView(size_hint=(.8,.8), background="")
-        self.NUMBER = random.choice(range(1, 10))
-        # TODO wywalic clockera i zobaczyc czy przy sound player nie beda zachodzic na siebie
-
-        self.clocker("pokaz_cyfre.wav", 1)
-        self.clocker(self.sounds[self.NUMBER], 4)
-
-    # def popuper(self, *args):
-    #     self.pop = ModalView()
-    #     self.pop.background = "buttons/purple-button-hi.png"
-    #     self.pop.add_widget(Label(text=str(self.NUMBER),
-    #                               font_size="100sp",))
-    #     self.pop.size_hint = (.95,.95)
-    #     return self.pop
 
 
     def callback(self, btn):
@@ -98,8 +85,9 @@ class MyApp(GridLayout):
             self.clocker("hurra.wav", -1)
         else:
            self.clocker("nie.wav", -1)
-        self.startGame()
+        #self.startGame()
         self.insertWidgets()
+
 
     def soundPlayer(self, sound, *args):
         # function for playing sounds
@@ -109,6 +97,7 @@ class MyApp(GridLayout):
         self.player.on_stop = partial(self.STOP, self.player.filename)
         print('sounds/{}'.format(sound), sound)
         self.player.play()
+
 
     def PLAY(self, sound):
         # used to open and dismiss popups while specific sound is beign  played
@@ -120,13 +109,14 @@ class MyApp(GridLayout):
             self.HurrayOhNoes.open()
         if sound == "nie.wav":
             self.numberPopUp.dismiss()
-            self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg", keep_ration=False))
+            self.HurrayOhNoes.background= "images/sad.jpg" #add_widget(Image(source="images/sad.jpg", keep_ration=False))
+            self.HurrayOhNoes.size_hint = (.4,.8)
             self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
             sleep(.4)
             self.HurrayOhNoes.dismiss()
-            self.temp_popup = ModalView()
-            self.temp_popup.add_widget(Label(text="WSKAZ CYFRE"))
+            self.temp_popup = ModalView(auto_dismiss = False, background="images/question.png", size_hint=(.5,.7))
+            #self.temp_popup.add_widget(Image(source="images/question.png", keep_ration=False))
             self.temp_popup.open()
             #self.numberPopUp.open()
         if sound in self.sounds.values():
@@ -140,6 +130,9 @@ class MyApp(GridLayout):
             self.disabled = False
             sleep(1)
             self.numberPopUp.dismiss()
+
+
+
 
 if __name__ == "__main__":
     class Main(App):
