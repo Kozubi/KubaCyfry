@@ -23,7 +23,7 @@ class MyApp(GridLayout):
         self.widgetList = []  # will store all buttons to easy remove
         self.block = False # for blocking overlaping sounds
         self.NUMBER = random.choice(range(1, 10))
-
+        self.sound = SoundLoader()
         self.startGame()
         self.insertWidgets()
 
@@ -68,7 +68,6 @@ class MyApp(GridLayout):
         "will tale random number and plays correct audio"
         print("wybierz cyfre")
         self.ppp = ModalView()
-
         self.NUMBER = random.choice(range(1, 10))
         self.clocker("pokaz_cyfre.wav", 2)
         self.clocker(self.sounds[self.NUMBER], 4)
@@ -92,7 +91,6 @@ class MyApp(GridLayout):
             self.clocker("hurra.wav", -1)
         else:
            self.clocker("nie.wav", -1)
-
         self.startGame()
         self.insertWidgets()
 
@@ -100,32 +98,32 @@ class MyApp(GridLayout):
     def soundPlayer(self, sound, *args):
         # function for playing sounds
         # will block main window where sound is played!
-        self.player = SoundLoader().load("sounds/{}".format(sound))
-        if sound in ["hurra.wav", "nie.wav", "pokaz_cyfre.wav"]:
-            #self.disabled = True
-            for i in self.children:
-                i.disabled = True
-            if sound == "hurra.wav":
-                print("HURRA")
-                self.ppp.add_widget(Label(text="HURRA"))
-                self.ppp.open()
-            elif sound == 'nie.wav':
-                self.ppp.dismiss()
-            elif sound == 'pokaz_cyfre.wav':
-                self.ppp.dismiss()
-            #TODO ADD GREETING POPUP!
-        elif sound in self.sounds.values():
-            # will unlock main window when number is played
-            print("IN SOUND")
-            self.disabled = False
-            self.popUp.dismiss()
-            self.ppp.dismiss()
-            del self.ppp
-
+        self.player = self.sound.load("sounds/{}".format(sound))
+        self.player.on_play = partial(self.PLAY, self.player.filename)
+        self.player.on_stop = partial(self.STOP, self.player.filename)
         print('sounds/{}'.format(sound), sound)
-    #TODO  self.player.on_play = self.disabled
         self.player.play()
 
+    def PLAY(self, sound):
+        # used to open and dismiss popups while specific sound is beign  played
+        sound = sound.split("/")[-1]
+        self.popUp.dismiss()
+        if sound == "hurra.wav":
+            self.ppp.add_widget(Label(text="HURRA"))
+            self.ppp.open()
+        if sound == "nie.wav":
+            self.ppp.add_widget(Label(text="NIE"))
+            self.ppp.open()
+        if sound == "pokaz_cyfre.wav":
+            self.ppp.dismiss()
+            self.popUp.open()
+        print("PLAYYYY", sound)
+
+    def STOP(self, sound):
+        sound = sound.split("/")[-1]
+        if sound in self.sounds.values():
+            self.disabled = False
+            self.popUp.dismiss()
 
 if __name__ == "__main__":
     class Main(App):
