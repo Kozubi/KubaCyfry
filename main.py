@@ -4,6 +4,7 @@ from kivy.app import App
 #from kivy.lang import Builder
 from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
+from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.audio import SoundLoader
@@ -108,10 +109,10 @@ class MyApp(GridLayout):
         sound = sound.split("/")[-1]
         #self.numberPopUp.dismiss()
         if sound == "hurra.wav":
-            self.HurrayOhNoes.add_widget(Label(text="HURRA"))
+            self.HurrayOhNoes.add_widget(Image(source="images/happy.jpg"))
             self.HurrayOhNoes.open()
         if sound == "nie.wav":
-            self.HurrayOhNoes.add_widget(Label(text="NIE"))
+            self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg", keep_ration=False))
             self.HurrayOhNoes.open()
         if sound == "pokaz_cyfre.wav":
             self.HurrayOhNoes.dismiss()
