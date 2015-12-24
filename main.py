@@ -106,20 +106,22 @@ class MyApp(GridLayout):
             self.numberPopUp.dismiss()
             self.HurrayOhNoes.add_widget(Image(source="images/happy.jpg"))
             self.HurrayOhNoes.open()
+
         if sound == "nie.wav":
             self.numberPopUp.dismiss()
-            self.HurrayOhNoes.background= "images/sad.jpg" #add_widget(Image(source="images/sad.jpg", keep_ration=False))
+            self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg"))  #add_widget(Image(source="images/sad.jpg", keep_ration=False))
             #self.HurrayOhNoes.size_hint = (.5,.8)
             self.HurrayOhNoes.open()
         
         if sound == "pokaz_cyfre.wav":
-            sleep(.8)
-            self.HurrayOhNoes.dismiss()
+            sleep(.7)
             self.temp_popup = ModalView(auto_dismiss = False, background="images/question.png",
                                         size_hint=(.6,.5))
+            self.HurrayOhNoes.dismiss()
             #self.temp_popup.add_widget(Image(source="images/question.png", keep_ration=False))
             self.temp_popup.open()
             #self.numberPopUp.open()
+
         if sound in self.sounds.values():
             self.temp_popup.dismiss()
             self.numberPopUp.open()
