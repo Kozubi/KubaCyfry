@@ -54,7 +54,7 @@ class MyApp(GridLayout):
             color = random.choice(self.btnColors) # select random color for new button
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="100sp", background_color=color,
-                         on_release=self.callback)
+                         on_press=self.callback)
             btn.background_normal= "buttons/purple-button-hi.png"
             btn.background_disabled_normal = "buttons/purple-button-hi.png"
             # TODO add down background color
@@ -111,8 +111,9 @@ class MyApp(GridLayout):
             self.HurrayOhNoes.background= "images/sad.jpg" #add_widget(Image(source="images/sad.jpg", keep_ration=False))
             #self.HurrayOhNoes.size_hint = (.5,.8)
             self.HurrayOhNoes.open()
+        
         if sound == "pokaz_cyfre.wav":
-            sleep(.4)
+            sleep(.8)
             self.HurrayOhNoes.dismiss()
             self.temp_popup = ModalView(auto_dismiss = False, background="images/question.png",
                                         size_hint=(.6,.5))
@@ -138,6 +139,8 @@ if __name__ == "__main__":
     class Main(App):
         def open_settings(self, *largs):
             pass
+        def on_pause(self):
+            True
         def build(self):
             return MyApp()
     Main().run()
