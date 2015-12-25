@@ -26,7 +26,15 @@ class MyApp(GridLayout):
         self.block = False # for blocking overlaping sounds
 
         self.sound = SoundLoader()
-        self.insertWidgets()
+        self.firstPopup()
+
+
+    def firstPopup(self, *args):
+        frstPop = ModalView()
+        btnStart = Button(text="Zaczynamy!", on_press=frstPop.dismiss)
+        frstPop.add_widget(btnStart)
+        frstPop.on_dismiss =  self.insertWidgets
+        frstPop.open()
 
 
     def insertWidgets(self):
@@ -67,7 +75,7 @@ class MyApp(GridLayout):
         # popup with number for presentation
         self.numberPopUp = ModalView(auto_dismiss = False, background = "buttons/purple-button-hi.png", size_hint = (.7,.7))
         self.numberPopUp.add_widget(Label(text=str(self.NUMBER),
-                                  font_size="100sp",))
+                                  font_size="250sp",))
 
 
     def clocker(self, sound, time, *args):
