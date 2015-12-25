@@ -111,13 +111,16 @@ class MyApp(GridLayout):
         sound = sound.split("/")[-1]
         #self.numberPopUp.dismiss()
         if sound == "hurra.wav":
+            pic = random.choice(('images/happy.jpg', 'images/happy-face.jpg',
+            'images/Peppa-happy.jpg'))
             self.numberPopUp.dismiss()
-            self.HurrayOhNoes.add_widget(Image(source="images/happy.jpg"))
+            self.HurrayOhNoes.add_widget(Image(source=pic))
             self.HurrayOhNoes.open()
 
         if sound == "nie.wav":
             self.numberPopUp.dismiss()
-            self.HurrayOhNoes.add_widget(Image(source="images/sad.jpg"))  #add_widget(Image(source="images/sad.jpg", keep_ration=False))
+            pic='images/peppaSad.png'
+            self.HurrayOhNoes.add_widget(Image(source=pic))  #add_widget(Image(source="images/sad.jpg", keep_ration=False))
             #self.HurrayOhNoes.size_hint = (.5,.8)
             self.HurrayOhNoes.open()
         
