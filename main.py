@@ -2,6 +2,7 @@ __author__ = 'Marcin'
 
 from kivy.app import App
 #from kivy.lang import Builder
+from kivy.core.window import Window
 from kivy.uix.modalview import ModalView
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -26,8 +27,8 @@ class MyApp(GridLayout):
         self.block = False # for blocking overlaping sounds
 
         self.sound = SoundLoader()
-        self.firstPopup()
-
+       # self.firstPopup()
+        self.insertWidgets()
 
     def firstPopup(self, *args):
         frstPop = ModalView()
@@ -83,10 +84,7 @@ class MyApp(GridLayout):
 
 
     def callback(self, btn):
-        """
-        :param btn: here btn number will be taken to use it for sound
-        :return:
-        """
+        """ here btn number will be taken to use it for sound """
         #self.disabled = True
         if str(self.NUMBER) == btn.text:
             self.clocker("hurra.wav", -1)
@@ -146,14 +144,14 @@ class MyApp(GridLayout):
             self.numberPopUp.dismiss()
 
 
-
-
 if __name__ == "__main__":
     class Main(App):
+        Window.fullscreen=False
         def open_settings(self, *largs):
             pass
         def on_pause(self):
             True
+
         def build(self):
             return MyApp()
     Main().run()
