@@ -44,16 +44,30 @@ class NumScreen(Screen):
 
 
 if __name__ == "__main__":
-    Window.fullscreen=False
-    Window.size = (400,240)
+
     class MyApp2(App):
+
+        def keyHandler(self, window, key, *args):
+            # function to ovveride ESC button
+            if key == 27:
+                self.root.current = "first"
+                # TODO will need to kill NumberApp when closing - add function in my app to kill it!!
+                return True
+
         def open_settings(self, *largs):
             pass
+
+
         def build(self):
-            root = ScreenManager()
-            root.add_widget(Splash(name="first"))
-            root.add_widget(NumScreen(name="numbers"))
-            return root
+            Window.fullscreen=False
+            Window.size = (400,240)
+
+            Window.bind(on_keyboard=self.keyHandler)
+            self.root = ScreenManager()
+            self.root.add_widget(Splash(name="first"))
+            self.root.add_widget(NumScreen(name="numbers"))
+            self.root.current = "first"
+            return self.root
 
     app = MyApp2()
     app.run()
