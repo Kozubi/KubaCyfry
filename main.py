@@ -17,7 +17,7 @@ from time import sleep
 
 class MyApp(GridLayout):
     def __init__(self, *args):
-        super(MyApp, self).__init__()
+        super(MyApp, self).__init__(*args)
         self.rows, self.cols = [3, 3]
         self.padding = 5
         self.spacing = 5
@@ -27,8 +27,9 @@ class MyApp(GridLayout):
         self.block = False # for blocking overlaping sounds
 
         self.sound = SoundLoader()
-       # self.firstPopup()
-        self.insertWidgets()
+        #self.firstPopup()
+
+        #self.insertWidgets()
 
     def firstPopup(self, *args):
         frstPop = ModalView()
@@ -66,7 +67,6 @@ class MyApp(GridLayout):
                          on_press=self.callback)
             btn.background_normal= "buttons/purple-button-hi.png"
             btn.background_disabled_normal = "buttons/purple-button-hi.png"
-            # TODO add down background color
             btn.background_down = "buttons/purple-button-hi.png"
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
@@ -144,14 +144,14 @@ class MyApp(GridLayout):
             self.numberPopUp.dismiss()
 
 
-if __name__ == "__main__":
-    class Main(App):
-        Window.fullscreen=False
-        def open_settings(self, *largs):
-            pass
-        def on_pause(self):
-            True
-
-        def build(self):
-            return MyApp()
-    Main().run()
+# if __name__ == "__main__":
+#     class Main(App):
+#         Window.fullscreen=False
+#         def open_settings(self, *largs):
+#             pass
+#         def on_pause(self):
+#             True
+#
+#         def build(self):
+#             return MyApp()
+#     Main().run()

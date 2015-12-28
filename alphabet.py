@@ -18,7 +18,7 @@ import string
 kv = """
 <MyButton>:
     font_size: "50sp"
-    background_color: (.7,.1,.1,.9)
+
 """
 
 Builder.load_string(kv)
@@ -48,7 +48,13 @@ class Alpha(GridLayout):
         self.pop.add_widget(Button(text=str(self.RANDOM_NUMBER), on_press=self.pop.dismiss))
 
         for i in string.ascii_uppercase:
+            x = random.uniform(0.1,0.99)
+            y = random.uniform(0.1,0.99)
+            z = random.uniform(0.1,0.99)
+
             btn = MyButton(text=str(i), on_press=self.checker)
+            btn.background_color = (x,y,z,1)
+            btn.background_normal = "buttons/purple-button-hi.png"
             self.add_widget(btn)
             self.WIDGET_LIST.append(btn)
 
@@ -75,8 +81,16 @@ class Alpha(GridLayout):
     def SoundPlayer(self, sound):
         s = SoundLoader()
         s = s.load(sound)
+        self.player.on_play = partial(self.PLAY, self.player.filename)
+        self.player.on_stop = partial(self.STOP, self.player.filename)
         s.play()
 
+    def PLAY(self, sound):
+        pass
+
+
+    def STOP(self, sound):
+        pass
 
 class MyApp(App):
     Window.fullscreen=False

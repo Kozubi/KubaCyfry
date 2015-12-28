@@ -6,41 +6,54 @@ from kivy.uix.popup import Popup
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from main import MyApp
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.window import Window
 
 """
 Main screen for future options (like other games)
 """
-class Splash(GridLayout):
-    def __init__(self):
-        super(Splash, self).__init__()
-        self.rows, self.cols = [1,2]
+class Splash(Screen):
+    def __init__(self, **kwargs):
+        super(Splash, self).__init__(**kwargs)
 
-        btn1 = Button(text="1", on_press=self.callback)
-        btn2 = Button(text="2", on_press=self.Pop)
+        self.grid = GridLayout(cols = 2, rows = 2)
+        btn1 = Button(text="1")
+        btn1.on_press = self.prin
+        self.grid.add_widget(btn1)
 
-        self.add_widget(btn1)
-        self.add_widget(btn2)
+        btn2 = Button(text="2")
+        btn2.on_press = self.switchToNumbers
+        self.grid.add_widget(btn2)
+        self.add_widget(self.grid)
 
-    def callback(self, *args):
-        self.clear_widgets()
-        self.add_widget(MyApp())
+    def prin(self, *args):
+        self.parent.current = "first"
+        # TODO here will be alphabet
 
-    def Pop(self, *args):
-        print(2)
-        myPop = Popup()
-        myPop.on_touch_move= self.mrrr
-        myPop.open()
+    def switchToNumbers(self, *args):
+        self.parent.current = "numbers"
+        APP_NUM.insertWidgets()
 
-    def mrrr(self, *args):
-        print("MRRRRRR", args)
+
+class NumScreen(Screen):
+    def __init__(self, **kwargs):
+        super(NumScreen, self).__init__(**kwargs)
+        global APP_NUM # need to run in prin2 screen
+        APP_NUM = MyApp()
+        self.add_widget(APP_NUM)
 
 
 if __name__ == "__main__":
+    Window.fullscreen=False
+    Window.size = (400,240)
     class MyApp2(App):
         def open_settings(self, *largs):
             pass
         def build(self):
-            return Splash()
+            root = ScreenManager()
+            root.add_widget(Splash(name="first"))
+            root.add_widget(NumScreen(name="numbers"))
+            return root
 
     app = MyApp2()
     app.run()
