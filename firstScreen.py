@@ -27,12 +27,15 @@ class Splash(Screen):
         self.add_widget(self.grid)
 
     def prin(self, *args):
+
         self.parent.current = "first"
+
         # TODO here will be alphabet
 
     def switchToNumbers(self, *args):
         self.parent.current = "numbers"
-        APP_NUM.insertWidgets()
+        APP_NUM.firstPopup()
+       # APP_NUM.insertWidgets()
 
 
 class NumScreen(Screen):
@@ -50,7 +53,9 @@ if __name__ == "__main__":
         def keyHandler(self, window, key, *args):
             # function to ovveride ESC button
             if key == 27:
+                APP_NUM.killAll()
                 self.root.current = "first"
+
                 # TODO will need to kill NumberApp when closing - add function in my app to kill it!!
                 return True
 

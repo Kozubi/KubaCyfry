@@ -44,8 +44,7 @@ class MyApp(GridLayout):
         self.NUMBER = random.choice(range(1,10))
         self.HurrayOhNoes = ModalView(auto_dismiss = False, size_hint=(.8,.8),
                                       background="")
-        self.clocker("pokaz_cyfre.wav", 1)
-        self.clocker(self.sounds[self.NUMBER], 4)
+
 
         if len(self.widgetList) > 1:
             for item in self.widgetList:
@@ -74,6 +73,8 @@ class MyApp(GridLayout):
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
         # popup with number for presentation
+        self.clocker("pokaz_cyfre.wav", 1)
+        self.clocker(self.sounds[self.NUMBER], 4)
         self.numberPopUp = ModalView(auto_dismiss = False, background = "buttons/purple-button-hi.png", size_hint = (.7,.7))
         self.numberPopUp.add_widget(Label(text=str(self.NUMBER),
                                   font_size="250sp",))
@@ -87,9 +88,9 @@ class MyApp(GridLayout):
         """ here btn number will be taken to use it for sound """
         #self.disabled = True
         if str(self.NUMBER) == btn.text:
-            self.clocker("hurra.wav", -1)
+            self.clocker("hurra.wav")#, -1)
         else:
-           self.clocker("nie.wav", -1)
+           self.clocker("nie.wav")#, -1)
         #self.startGame()
         self.insertWidgets()
 
@@ -142,6 +143,36 @@ class MyApp(GridLayout):
             self.disabled = False
             sleep(1)
             self.numberPopUp.dismiss()
+
+
+    def killAll(self):
+
+        Clock.unschedule(self.soundPlayer, all=True)
+        print("AFTER CLOCK")
+        # try:
+        #     self.HurrayOhNoes.dismiss()
+        # except AttributeError:
+        #     pass
+        # try:
+        #     self.player.stop()
+        # except AttributeError:
+        #     pass
+        # try:
+        #     self.temp_popup.dismiss()
+        # except AttributeError:
+        #     pass
+        # try:
+        #     self.player.stop()
+        # except AttributeError:
+        #     pass
+        # try:
+        #     self.numberPopUp.dismiss()
+        # except AttributeError:
+        #     pass
+        # try:
+        #     self.player.stop()
+        # except AttributeError:
+        #     pass
 
 
 # if __name__ == "__main__":
