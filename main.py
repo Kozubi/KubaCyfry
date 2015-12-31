@@ -89,10 +89,10 @@ class MyApp(GridLayout):
         """ here btn number will be taken to use it for sound """
         #self.disabled = True
         if str(self.NUMBER) == btn.text:
-            self.clocker("hurra.wav")#, -1)
+            self.clocker("hurra.wav", -1)
             #self.soundPlayer("hurra.wav")
         else:
-            self.clocker("nie.wav")#, -1)
+            self.clocker("nie.wav", -1)
             #self.soundPlayer("nie.wav")
         #self.startGame()
         self.insertWidgets()
@@ -108,7 +108,10 @@ class MyApp(GridLayout):
             print('sounds/{}'.format(sound), sound)
             self.player.play()
         else:
-            self.temp_popup.dismiss()
+            try:
+                self.temp_popup.dismiss()
+            except AttributeError:
+                pass
             self.numberPopUp.dismiss()
 
 

@@ -54,10 +54,8 @@ if __name__ == "__main__":
             # function to ovveride ESC button
             if key == 27:
                 APP_NUM.block = True
-
                 APP_NUM.remove_widget(APP_NUM.HurrayOhNoes)
                 APP_NUM.remove_widget(APP_NUM.numberPopUp)
-
                 self.root.current = "first"
                 # TODO will need to kill NumberApp when closing - add function in my app to kill it!!
                 return True
