@@ -55,7 +55,9 @@ if __name__ == "__main__":
             if key == 27:
                 APP_NUM.killAll()
                 self.root.current = "first"
-
+                APP_NUM.numberPopUp.dismiss()
+                APP_NUM.temp_popup.dismiss()
+                # TODO DOROBIC ZEBY ON PRZLACZANIE SIE KASOWAL POPUPY
                 # TODO will need to kill NumberApp when closing - add function in my app to kill it!!
                 return True
 
