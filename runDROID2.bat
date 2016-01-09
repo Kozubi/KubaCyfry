@@ -1,1 +1,1 @@
-py -2 main.py -m screen:droid2,portrait
+py -2 firstScreen.py -m screen:droid2,landscape

@@ -1,1 +1,1 @@
-py -2 main.py -m screen:nexus7,portrait
+py -2 firstScreen.py -m screen:nexus7,portrait

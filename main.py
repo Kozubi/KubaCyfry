@@ -64,18 +64,19 @@ class MyApp(GridLayout):
             self.btnColors.remove(color) # will remove color from colors list to avoid duplicated colors
             btn = Button(text=str(currentNumber), font_size="100sp", background_color=color,
                          on_press=self.callback)
-            btn.background_normal= "buttons/purple-button-hi.png"
-            btn.background_disabled_normal = "buttons/purple-button-hi.png"
-            btn.background_down = "buttons/purple-button-hi.png"
+            bckg = "buttons/purple-button-hi.png"
+            btn.background_normal= bckg
+            btn.background_disabled_normal = bckg
+            btn.background_down = bckg
             self.widgetList.append(btn) # will add button to this list - it used later for clearing Grid\
                                         #  from childrens
             self.add_widget(btn)
             self.btnNUMBERScopy.remove(currentNumber) # remove choosed number to avoid duplicated button numbers
 
         # popup with number for presentation
-        self.numberPopUp = ModalView(auto_dismiss = False, background = "buttons/purple-button-hi.png", size_hint = (.7,.7))
+        self.numberPopUp = ModalView(auto_dismiss = False, background = bckg, size_hint = (.7,.7))
         self.numberPopUp.add_widget(Label(text=str(self.NUMBER),
-                                  font_size="250sp",))
+                                  font_size="150sp",))
         self.clocker("pokaz_cyfre.wav", 1)
         self.clocker(self.sounds[self.NUMBER], 4)
 
